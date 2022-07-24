@@ -5,7 +5,7 @@ const Airtable = require('airtable')
 //     return `saved your record`
 // }
 
-module.exports.findOneByValue = async ({ baseId, table, field, value, view }) => {
+module.exports.findRecordByValue = async ({ baseId, table, field, value, view }) => {
     var base = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base(baseId);
     theRecords = [];
     await base(table).select({
@@ -23,7 +23,7 @@ module.exports.findOneByValue = async ({ baseId, table, field, value, view }) =>
       return theRecords[0];
 }
 
-module.exports.findOneById = async function({ baseId, table, recordId }) {
+module.exports.findRecordById = async function({ baseId, table, recordId }) {
   console.log(`looking for ${recordId} in ${table} in ${baseId}`)  
   var base = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base(baseId);
     var result = await base(table)

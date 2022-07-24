@@ -3,7 +3,7 @@ const airtableTools = require(`./src/utilities/airtable-tools`);
 const game1 = require("./src/games/game1");
 const game2 = require("./src/games/game2");
 const harvardLife = require("./src/games/harvard-life");
-const sendNewSituation = require('./src/games/send-new-situation');
+const newSituationDMFromMove = require('./src/game-tools/new-situation-dm-from-move');
 const { blue, darkgray, gray, magenta, yellow, divider, red } = require('./src/utilities/mk-loggers')
 const { appHome } = require('./src/game-tools')
 
@@ -41,8 +41,7 @@ app.command("/game1", game1);
 app.command("/game2", game2);
 app.command("/harvardlife", harvardLife);
 
-app.action("choice_made", sendNewSituation);
-
+app.action("choice_made", newSituationDMFromMove);
 
 (async () => {
   // Start your app

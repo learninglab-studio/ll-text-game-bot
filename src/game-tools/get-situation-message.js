@@ -1,27 +1,7 @@
 const { findRecordById, findRecordByValue } = require('../utilities/airtable-tools')
-const { getGameInfo } = require('../game-tools')
+const { red, blue, magenta, yellow, divider, gray, darkgray, cyan } = require('../utilities/mk-loggers')
 
-
-module.exports = async ({ command, client, say, ack }) => {
-    await ack()
-    const gameResult = await findRecordByValue({
-        baseId: process.env.AIRTABLE_TEXT_GAME_BASE,
-        table: "Games",
-        value: "Game1",
-        field: "Name"
-    })
-    console.log(`someone requested game 1\n${JSON.stringify(command, null, 4)}`)
-    console.log(JSON.stringify(gameResult, null, 4))
-    await say(`OK <@${command.user_id}>, let's play. I'll see you in your DMs in a second.`)
-    const situationBlocks = await getSituationBlocks(gameResult.fields.FirstRoom[0], command.user_id)
-    await client.chat.postMessage({
-        channel: command.user_id,
-        blocks: situationBlocks,
-        text: "this game requires blocks"
-    })
-}
-
-const getSituationBlocks = async (situationId, userId) => {
+const getSituationMessage = async (situationId, userId) => {
     const situationResult = await findRecordById({
         baseId: process.env.AIRTABLE_TEXT_GAME_BASE,
         table: "Situations",
@@ -104,7 +84,10 @@ const getSituationBlocks = async (situationId, userId) => {
 		})
         
     }
-    return blocks
+    return {
+        blocks: blocks
+    }
 }
 
 
+module.exports = getSituationMessage
