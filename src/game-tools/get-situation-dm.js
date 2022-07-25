@@ -1,7 +1,7 @@
 const { findRecordById, findRecordByValue } = require('../utilities/airtable-tools')
 const { red, blue, magenta, yellow, divider, gray, darkgray, cyan } = require('../utilities/mk-loggers')
 
-const getSituationMessage = async (situationId, userId) => {
+const getSituationDM = async (situationId, userId) => {
     const situationResult = await findRecordById({
         baseId: process.env.AIRTABLE_TEXT_GAME_BASE,
         table: "Situations",
@@ -28,40 +28,6 @@ const getSituationMessage = async (situationId, userId) => {
 				"text": situationResult.fields.Text
 			}
 		},
-        {
-            "type": "actions",
-            "elements": [
-                {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "Farmhouse",
-                        "emoji": true
-                    },
-                    "value": "click_me_123"
-                },
-                {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "Kin Khao",
-                        "emoji": true
-                    },
-                    "value": "click_me_123",
-                    "url": "https://google.com"
-                },
-                {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "Ler Ros",
-                        "emoji": true
-                    },
-                    "value": "click_me_123",
-                    "url": "https://google.com"
-                }
-            ]
-        }
 	]
     for (let index = 0; index < situationResult.fields.Choices.length; index++) {
         const element = situationResult.fields.Choices[index];
@@ -78,16 +44,18 @@ const getSituationMessage = async (situationId, userId) => {
 					"text": situationResult.fields.ChoicesText[index],
 					"emoji": true
 				},
-				"value": `${userId}___${element}`,
+				"value": `${element}`,
 				"action_id": "choice_made"
 			}
 		})
         
     }
     return {
-        blocks: blocks
+        blocks: blocks,
+        channel: userId,
+        text: `this game requires blocks`
     }
 }
 
 
-module.exports = getSituationMessage
+module.exports = getSituationDM

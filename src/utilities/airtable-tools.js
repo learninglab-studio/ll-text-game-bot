@@ -20,7 +20,8 @@ module.exports.findRecordByValue = async ({ baseId, table, field, value, view })
       //   // return(theRecords);
       // })
       .catch(err=>{console.error(err); return})
-      return theRecords[0];
+    // console.log(JSON.stringify(theRecords))
+    return theRecords[0];
 }
 
 module.exports.findRecordById = async function({ baseId, table, recordId }) {
@@ -29,5 +30,6 @@ module.exports.findRecordById = async function({ baseId, table, recordId }) {
     var result = await base(table)
       .find(recordId)
       .catch(err=>{console.error(err); return});
+    console.log(JSON.stringify(result, null, 4))
     return result;
   }
