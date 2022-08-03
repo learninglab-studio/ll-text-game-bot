@@ -1,8 +1,6 @@
-const { getGameInfo, initSession, modalStartView } = require('../game-tools')
-const { findRecordById, findRecordByValue } = require('../utilities/airtable-tools')
-const { magenta, gray, yellow, blue, divider, red } = require('../utilities/mk-loggers')
-
-
+const { getGameInfo, initSession, modalStartView } = require('../../game-tools')
+const { findRecordById, findRecordByValue } = require('../../utilities/airtable-tools')
+const { magenta, gray, yellow, blue, divider, red } = require('../../utilities/mk-loggers')
 
 module.exports = async ({ ack, body, client, logger }) => {
     // Acknowledge the command request

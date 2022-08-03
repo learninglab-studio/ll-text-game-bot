@@ -1,6 +1,6 @@
-const { findRecordById, findRecordByValue } = require('../utilities/airtable-tools')
-const { getGameRecord, getLevelRecord, getSituationDM } = require('../game-tools')
-const { red, blue, magenta, yellow, divider, gray, darkgray, cyan } = require('../utilities/mk-loggers')
+const { findRecordById, findRecordByValue } = require('../../utilities/airtable-tools')
+const { getGameRecord, getLevelRecord, getSituationDM } = require('../../game-tools')
+const { red, blue, magenta, yellow, divider, gray, darkgray, cyan } = require('../../utilities/mk-loggers')
 
 module.exports = async ({ command, client, say, ack }) => {
     await ack()
@@ -13,6 +13,3 @@ module.exports = async ({ command, client, say, ack }) => {
     const situationDM = await getSituationDM(firstLevelRecord.fields.FirstSituation[0], command.user_id)
     await client.chat.postMessage(situationDM)
 }
-
-
-

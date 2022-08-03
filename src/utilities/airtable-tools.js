@@ -30,6 +30,6 @@ module.exports.findRecordById = async function({ baseId, table, recordId }) {
     var result = await base(table)
       .find(recordId)
       .catch(err=>{console.error(err); return});
-    console.log(JSON.stringify(result, null, 4))
-    return result;
-  }
+    // console.log(JSON.stringify(result, null, 4))
+  return result;
+}

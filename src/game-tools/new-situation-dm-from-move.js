@@ -1,10 +1,14 @@
 const { blue, darkgray, gray, magenta, yellow, divider, red } = require('../utilities/mk-loggers')
-const { getSituationDM, getChoiceRecord } = require("./index")
+const { getSituationDM } = require("./index")
+const hlChoiceRecord = require("./hl-choice-record")
 
 const newSituationDMFromMove = async ({ ack, body, payload, client }) => {
     ack()
-    const choiceRecord = await getChoiceRecord(payload.value)
+    yellow(`newSituationDMFromMove`)
+    const choiceRecord = await hlChoiceRecord(payload.value)
+    blue(choiceRecord)
     const newSituationDM = await getSituationDM(choiceRecord.fields.GoesToRoom[0], body.user.id)
+    magenta(newSituationDM)
     await client.chat.postMessage(newSituationDM)
 }
 

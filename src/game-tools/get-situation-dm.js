@@ -2,6 +2,7 @@ const { findRecordById, findRecordByValue } = require('../utilities/airtable-too
 const { red, blue, magenta, yellow, divider, gray, darkgray, cyan } = require('../utilities/mk-loggers')
 
 const getSituationDM = async (situationId, userId) => {
+	red(`getting situation DM`)
     const situationResult = await findRecordById({
         baseId: process.env.AIRTABLE_TEXT_GAME_BASE,
         table: "Situations",
@@ -18,7 +19,7 @@ const getSituationDM = async (situationId, userId) => {
 		},
 		{
 			"type": "image",
-			"image_url": situationResult.fields.Image,
+			"image_url": situationResult.fields.Image ? situationResult.fields.Image : process.env.DEFAULT_IMAGE,
 			"alt_text": situationResult.fields.Name
 		},
 		{
@@ -29,27 +30,30 @@ const getSituationDM = async (situationId, userId) => {
 			}
 		},
 	]
-    for (let index = 0; index < situationResult.fields.Choices.length; index++) {
-        const element = situationResult.fields.Choices[index];
-        blocks.push({
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": situationResult.fields.ChoicesText[index]
-			},
-			"accessory": {
-				"type": "button",
+	if (situationResult.fields.Choices) {
+		for (let index = 0; index < situationResult.fields.Choices.length; index++) {
+			const element = situationResult.fields.Choices[index];
+			blocks.push({
+				"type": "section",
 				"text": {
-					"type": "plain_text",
-					"text": situationResult.fields.ChoicesText[index],
-					"emoji": true
+					"type": "mrkdwn",
+					"text": situationResult.fields.ChoicesText[index]
 				},
-				"value": `${element}`,
-				"action_id": "choice_made"
-			}
-		})
-        
-    }
+				"accessory": {
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": situationResult.fields.ChoicesText[index],
+						"emoji": true
+					},
+					"value": `${element}`,
+					"action_id": "tg_choice_made"
+				}
+			})
+			
+		}
+	}
+	// red(blocks)
     return {
         blocks: blocks,
         channel: userId,

@@ -1,8 +1,6 @@
 const { App } = require('@slack/bolt');
 const airtableTools = require(`./src/utilities/airtable-tools`);
-const game1 = require("./src/games/game1");
-const game2 = require("./src/games/game2");
-const harvardLife = require("./src/games/harvard-life");
+const { game1, game2, harvardLife } = require('./src/games')
 const newSituationDMFromMove = require('./src/game-tools/new-situation-dm-from-move');
 const { blue, darkgray, gray, magenta, yellow, divider, red } = require('./src/utilities/mk-loggers')
 const { appHome } = require('./src/game-tools')
@@ -30,18 +28,23 @@ app.event(/.*/, async ({ event }) => { darkgray(event) });
 app.event("reaction_added", async ({ event, client }) => { yellow("got a reaction", event) });
 app.event('app_home_opened', appHome);
 
+app.action("tg_choice_made", newSituationDMFromMove);
+app.action("hl_choice_made", harvardLife.handleChoice);
+
 app.action(/.*/, async ({ payload, context, body, ack }) => {
     await ack();
-    darkgray(divider, `ACTION PAYLOAD`, divider, payload);
-    darkgray(divider, `ACTION BODY`, divider, body);
+    // darkgray(divider, `ACTION PAYLOAD`, divider, payload);
+    // darkgray(divider, `ACTION BODY`, divider, body);
 })
 
 
 app.command("/game1", game1);
 app.command("/game2", game2);
-app.command("/harvardlife", harvardLife);
+app.command("/harvardlife",
+    harvardLife.start
+);
 
-app.action("choice_made", newSituationDMFromMove);
+
 
 (async () => {
   // Start your app

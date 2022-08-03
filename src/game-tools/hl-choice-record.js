@@ -2,9 +2,9 @@ const { findRecordByValue, findRecordById } = require('../utilities/airtable-too
 const { magenta, gray, yellow, blue, divider } = require('../utilities/mk-loggers')
 
 module.exports = async (choiceId) => {
-    yellow(`AIRTABLE_HARVARD_LIFE_BASE`)
+    yellow(`getChoiceRecord`)
     const choiceRecord = await findRecordById({
-        baseId: process.env.AIRTABLE_TEXT_GAME_BASE,
+        baseId: process.env.AIRTABLE_HARVARD_LIFE_BASE,
         table: "Choices",
         recordId: choiceId
     })
